@@ -1,5 +1,5 @@
 # Attendance_Bot
-Helps in marking your hostel attendance by assigning one person in the hostel to mark everybody's attendance everyday. Saves time and human work.
+A telegram bot that helps in marking your hostel attendance by assigning one person in the hostel to mark everybody's attendance everyday. Saves time and human work.
 
 ## How to get started?
 - Create a new file ```key.js``` with a similar format as below - 
