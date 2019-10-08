@@ -1,9 +1,14 @@
 const TelegramBot = require('node-telegram-bot-api');
-const schedule = require('node-schedule');
-const keyFile = require('./key.js')
+const schedule = require('node-schedule-tz');
+var keyFile = "";
+try{
+    keyFile = require('./key.js');
+} catch(err) {
+
+}
 
 // replace the value below with the Telegram token you receive from @BotFather
-const token = keyFile.token;
+const token = keyFile.token || process.env.token;
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
@@ -23,7 +28,13 @@ const bot = new TelegramBot(token, {polling: true});
 
 var init = 0;
 var globalChatId = "";
-var floorList = keyFile.floorList;
+var floorListEnv = process.env.floorList;
+if (floorListEnv) {
+    floorListEnv = floorListEnv.split(' ');
+}
+var floorList = keyFile.floorList || floorListEnv;
+
+console.log(token, floorList);
 
 // Listen for any kind of message. There are different kinds of
 // messages.
@@ -33,7 +44,13 @@ bot.on('message', (msg) => {
   bot.sendMessage(globalChatId, 'This bot tells you who will mark the day\'s attendance at exactly 9 PM everyday. Thanks.');
 });
 
-schedule.scheduleJob({hour:21, minute: 00}, function(){
+var rule = new schedule.RecurrenceRule();
+rule.hour = 16;
+rule.minute = 8;
+// rule.second = 5;
+rule.tz = 'Asia/Kolkata';
+
+schedule.scheduleJob(rule, function(){
     if (globalChatId != ""){
         if (init == floorList.length){
             init = 0;
