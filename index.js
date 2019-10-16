@@ -45,8 +45,8 @@ bot.on('message', (msg) => {
 });
 
 var rule = new schedule.RecurrenceRule();
-rule.hour = 16;
-rule.minute = 8;
+rule.hour = 15;
+rule.minute = 30;
 // rule.second = 5;
 rule.tz = 'Asia/Kolkata';
 
@@ -59,3 +59,7 @@ schedule.scheduleJob(rule, function(){
         init++;
     }
 });
+
+setInterval(()=> {
+    console.log(globalChatId, init, floorList[init]);
+},10000);
